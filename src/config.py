@@ -37,12 +37,21 @@ TARGET_VARIABLE = "Rating"
 TEST_SIZE = 0.2
 RANDOM_STATE = 42
 
-SVD_PARAMS = {
-    'n_factors': 100,
-    'n_epochs': 20,
-    'lr_all': 0.005,
-    'reg_all': 0.02,
-    'random_state': RANDOM_STATE
+# Model
+PARAM_GRID = {
+    'n_factors': [50, 100],
+    'n_epochs': [20, 30],
+    'lr_all': [0.005, 0.01],
+    'reg_all': [0.02]
+}
+
+# GridSearchCV Settings
+GRID_SEARCH_CV_PARAMS = {
+    'param_grid': PARAM_GRID,
+    'measures': ['rmse', 'mae'],
+    'cv': 3,
+    'n_jobs': -1,
+    'joblib_verbose': 1
 }
 
 
