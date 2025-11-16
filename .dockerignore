@@ -1,0 +1,26 @@
+# Git
+.git/
+.gitignore
+
+# Docker
+.dockerignore
+Dockerfile
+
+# Python Build & Cache
+*.egg-info/
+__pycache__/
+build/
+dist/
+.env
+.pytest_cache/
+
+# IDE & OS
+.idea/
+.vscode/
+*.DS_Store
+
+# Data, Models, Logs, and Reports
+data/
+models/
+mlruns/
+reports/
