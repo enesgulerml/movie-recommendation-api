@@ -1,4 +1,4 @@
-# End-to-End Movie Recommendation System (v3.1)
+# End-to-End Movie Recommendation System (v5.3)
 
 This project builds a "Google-level," production-ready MLOps pipeline for a **Movie Recommendation System** based on the MovieLens 1M dataset.
 
@@ -7,16 +7,22 @@ This system demonstrates a full end-to-end lifecycle, converting raw `.dat` file
 * **v1.0: Feature Engineering & Model (SVD)**
 * **v2.0: Experiment Tracking (MLFlow + GridSearchCV)**
 * **v3.1: API Serving (FastAPI + Docker)**
+* **v4.0: Interactive Dashboard (Streamlit)**
+* **v5.3: Full Automated Testing (Pytest)**
 
 ---
 
 ## 🚀 Project Structure
+
 ```
 movie-recommendation-api/
 │
 ├── app/                  <- (v3.0) API service code (FastAPI)
 │   ├── main.py           <- (API "Motor")
 │   └── schema.py         <- (Pydantic "Contract")
+│
+├── dashboard/            <- (v4.0) Streamlit dashboard code
+│   └── app.py            <- (Dashboard "Direksiyon")
 │
 ├── data/
 │   ├── raw/
@@ -35,15 +41,22 @@ movie-recommendation-api/
 │   ├── data_processing.py    <- (Loads raw .dat files)
 │   └── train.py              <- (Main training script - SVD + GridSearchCV)
 │
-├── .gitignore                <- (Tells Git to ignore data, models, logs)
+├── test/                 <- (v5.3) Automated "Safety Net"
+│   ├── test_api_e2e.py       <- (E2E API Test)
+│   ├── test_pipeline.py      <- (Unit Test)
+│   └── test_train_integration.py <- (Integration Test)
+│
+├── .dockerignore             <- (Tells Docker which files to ignore)
+├── .gitignore                <- (Tells Git which files to ignore)
 ├── requirements.txt          <- (v5 Strategy: The *only* source of truth for dependencies)
 ├── setup.py                  <- (Makes 'src' an installable package)
-└── README.md                 <- (This file)
+├── pytest.ini                <- (Configures pytest markers)
+└── README.md                 <- (This file - The project user manual)
 ```
 
 ---
 
-## 🛠️ Installation & Setup (v1.0 - v5 Strategy)
+## 🛠️ Installation & Setup (v5 Strategy)
 
 Follow these steps to set up the project environment on your local machine.
 
@@ -55,10 +68,10 @@ Follow these steps to set up the project environment on your local machine.
 
 2.  **Download the Data (MovieLens 1M):**
     * Download `ratings.dat`, `users.dat`, and `movies.dat` (e.g., from Kaggle).
-    * Place these files inside the `data/raw/` directory.
+    * Place these files inside the `data/raw/` directory (you may need to create this folder).
 
 3.  **Create Conda Environment (Base only):**
-    We only use Conda to manage Python itself, not packages (to avoid "kaos").
+    We only use Conda to manage Python itself, not packages (to avoid Conda's dependency "kaos").
     ```bash
     conda create -n movie-recommendation-api python=3.10
     conda activate movie-recommendation-api
@@ -78,7 +91,32 @@ Follow these steps to set up the project environment on your local machine.
 
 ---
 
-## ⚡ How to Use
+## 🧪 v5.3: Running Automated Tests (Pytest)
+
+This project includes a "Google-level" safety net of automated tests (`test/` directory).
+
+### 1. Run All Tests (Fast & Slow)
+This will run all tests (Unit, Integration, and E2E).
+*(Note: This requires Docker to be running and the `recsys-api:v3` image to be built.)*
+
+```bash
+python -m pytest
+```
+*Expected Output: `== 5 passed ==`*
+
+### 2. Run Only Fast Unit Tests
+This skips any test marked as `@pytest.mark.slow`.
+
+```bash
+python -m pytest -m "not slow"
+```
+*Expected Output: `== 2 passed, 3 deselected ==`*
+
+---
+
+## ⚡ How to Use (v1.0 - v4.0)
+
+Once tested, you can use the project's features.
 
 ### 1. v2.1: Train Model & Track (MLFlow)
 
@@ -98,7 +136,7 @@ mlflow ui
 This runs the v3.1 API server in a Docker container (using our "kaos-free" v5 strategy `Dockerfile`).
 
 #### 1. Build the v3.1 API Image
-(If you encounter a `cannot allocate memory` error, please check your Docker/WSL 2 memory settings.)
+(If you encounter `cannot allocate memory` or `gcc failed` errors, this project has been refactored to use `pip` and `python:3.10-slim` to solve this "kaos".)
 ```bash
 docker build -t recsys-api:v3 .
 ```
@@ -119,3 +157,29 @@ Once the container is running (check with `docker ps`), go to your browser:
 
 * **API Docs (Swagger):** `http://localhost:8000/docs`
 * **Test Endpoint:** Try `GET /recommend/{user_id}` with `user_id = 5`
+
+---
+
+### 3. v4.0: View Dashboard (Streamlit)
+
+This dashboard (`dashboard/app.py`) is a **decoupled frontend** that consumes the v3.1 API Container.
+
+This requires **two separate terminals** running simultaneously:
+
+**➡️ Terminal 1: Run the API Server (v3.1)**
+(If not already running) Start the FastAPI Docker container:
+```bash
+docker run -d --rm -p 8000:80 \
+  -v ${pwd}/models:/app/models \
+  -v ${pwd}/data/processed:/app/data/processed \
+  -v ${pwd}/data/raw:/app/data/raw \
+  recsys-api:v3
+```
+
+**➡️ Terminal 2: Run the Streamlit App (v4.0)**
+Activate the conda environment and run the Streamlit app:
+```bash
+conda activate movie-recommendation-api
+python -m streamlit run dashboard/app.py
+```
+Your browser will open `http://localhost:8501`, where you can interact with the live system.
