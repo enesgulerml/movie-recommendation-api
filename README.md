@@ -88,6 +88,7 @@ Follow these steps to set up the project environment on your local machine.
     ```bash
     pip install -e .
     ```
+    Note: If you encounter environment-specific errors (like conda not found, docker build memory (cannot allocate memory), or pip install C++ compiler (gcc failed/Visual C++) errors), please check our TROUBLESHOOTING.md guide.
 
 ---
 
