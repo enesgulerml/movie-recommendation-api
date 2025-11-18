@@ -62,7 +62,7 @@ Follow these steps to set up the project environment on your local machine.
 
 1.  **Clone the Repository:**
     ```bash
-    git clone [https://github.com/enesgulerml/movie-recommendation-api.git](https://github.com/enesgulerml/movie-recommendation-api.git)
+    git clone https://github.com/enesgulerml/movie-recommendation-api.git
     cd movie-recommendation-api
     ```
 
