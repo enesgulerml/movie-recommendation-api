@@ -29,10 +29,13 @@ movie-recommendation-api/
 ├── dashboard/            # Frontend (Streamlit)
 │   └── app.py            # UI Logic
 │
+├── notebooks/            # EDA & Experiments (Jupyter)
+│   └── 01-Data-Exploration.ipynb
+│
 ├── src/                  # ML Pipeline (Training & Processing)
 │   ├── config.py         # Hyperparameters & Paths
 │   ├── train.py          # Training Script (SVD + GridSearchCV)
-│   └── data_processing.py
+│   └── data_processing.py # ETL & Data Transformation Logic
 │
 ├── tests/                # Automated Test Suite
 ├── requirements.txt      # Production Dependencies
