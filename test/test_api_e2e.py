@@ -9,9 +9,9 @@ from pathlib import Path
 
 # === Test Configuration ===
 PROJECT_ROOT = Path(__file__).parent.parent
-IMAGE_NAME = "recsys-api:v3"  # The v3.1 API image for THIS project
+IMAGE_NAME = "recsys-api:latest"
 CONTAINER_NAME = "test_recsys_api_service"
-API_URL = "http://127.0.0.1:8001"  # Use port 8001 to avoid conflicts
+API_URL = "http://127.0.0.1:8001"
 HEALTH_CHECK_URL = f"{API_URL}/"
 PREDICT_URL = f"{API_URL}/recommend/"
 MODEL_PATH = PROJECT_ROOT / "models"
