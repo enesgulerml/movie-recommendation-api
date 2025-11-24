@@ -63,8 +63,19 @@ pip install -e .
 ```
 
 ## 🚀 How to Run
-### Option A: Using Docker (Recommended for Serving)
-To run the API in a container with persistent model storage:
+Since the trained model files are not included in the repository (due to size limits), you must train the model locally first.
+
+### Option A: Train the Model (Required First Step)
+This pipeline processes the raw data, trains the SVD model, and saves the artifacts to the models/ directory.
+
+```bash
+# Run the training pipeline
+python -m src.train
+```
+✅ Success: Check that models/recsys_svd_model.pkl has been created.
+
+### Option B: Run API with Docker
+Once the model is trained, use Docker to serve the API. We mount your local models/ folder so the container can access the model you just created.
 
 1. Build the Image:
 ```bash
@@ -78,24 +89,14 @@ docker run -d --rm -p 8000:80 \
   -v "$(pwd)/data:/app/data" \
   recsys-api:latest
 ```
-Access API Docs at: http://localhost:8000/docs
+👉 Access API Docs: http://localhost:8000/docs
 
-### Option B: Local Training Pipeline
-To retrain the model and track experiments with MLflow:
-```bash
-# Train the model
-python -m src.train
-
-# View Experiment Dashboard
-mlflow ui
-```
-
-### Option C: User Dashboard
+### Option C: User Dashboard (Frontend)
 To launch the interactive frontend (ensure API is running first):
-```bash
+```
 streamlit run dashboard/app.py
 ```
-Access Dashboard at: http://localhost:8501
+👉 Access Dashboard: http://localhost:8501
 
 ## 🧪 Testing
 The project includes a robust test suite to ensure data integrity and API availability.
